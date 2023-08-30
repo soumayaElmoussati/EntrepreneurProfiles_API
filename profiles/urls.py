@@ -4,5 +4,5 @@ from .views import EntrepreneurProfileList
 
 urlpatterns = [
     path('profiles/', EntrepreneurProfileList.as_view(), name='profile-list'),
-    path('api/profiles/', views.create_profile, name='create-profile'),
+    path('create/', views.create_profile, name='create-profile'),
 ]
