@@ -68,8 +68,8 @@ def register(request):
 @api_view(['POST'])
 def create_profile(request):
     # Vérifiez si l'utilisateur est authentifié
-    if not request.user.is_authenticated:
-        return Response({'message': 'Vous devez être connecté pour créer un profil.'}, status=status.HTTP_401_UNAUTHORIZED)
+    #if not request.user.is_authenticated:
+    #    return Response({'message': 'Vous devez être connecté pour créer un profil.'}, status=status.HTTP_401_UNAUTHORIZED)
 
     # Récupérez les données de la demande
     name = request.data.get('name')

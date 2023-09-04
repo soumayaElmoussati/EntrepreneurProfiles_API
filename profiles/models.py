@@ -12,6 +12,7 @@ class Subscription(models.Model):
 class EntrepreneurProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
     description = models.TextField()
     sector = models.CharField(max_length=50)
     site = models.CharField(max_length=50)
