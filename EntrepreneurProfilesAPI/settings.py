@@ -86,8 +86,8 @@ DATABASES = {
         'NAME': 'profiles',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost',  # L'hôte de la base de données
-        'PORT': '3306',       # Port de la base de données
+        'HOST': 'localhost',  
+        'PORT': '3306',      
     }
 }
 

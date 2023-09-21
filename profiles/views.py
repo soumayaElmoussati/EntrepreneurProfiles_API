@@ -17,51 +17,11 @@ class EntrepreneurProfileList(generics.ListAPIView):
     serializer_class = EntrepreneurProfileSerializer
 
 
-#@api_view(['POST'])
-#def create_profile(request):
-  #  if request.method == 'POST':
-  #      serializer = EntrepreneurProfileSerializer(data=request.data)
-  #      if serializer.is_valid():
-   #         serializer.save()
-   #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-   #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['DELETE'])
-def delete_profile(request, profile_id):
-    try:
-        profile = EntrepreneurProfile.objects.get(pk=profile_id)
-    except EntrepreneurProfile.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'DELETE':
-        profile.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class SubscriptionList(generics.ListCreateAPIView):
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
-
-
-@api_view(['POST'])
-def register(request):
-    # Récupérez les données de la demande
-    username = request.data.get('username')
-    password = request.data.get('password')
-    email = request.data.get('email')
-
-    # Validez les données d'entrée (vous pouvez utiliser Django forms ou serializers)
-    if not username or not password or not email:
-        return Response({'message': 'Veuillez fournir un nom d\'utilisateur, un mot de passe et un e-mail.'}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Créez un nouvel utilisateur
-    user = User.objects.create_user(username=username, password=password, email=email)
-    user.save()
-
-    # Créez un jeton d'authentification pour l'utilisateur
-    token, created = Token.objects.get_or_create(user=user)
-
-    return Response({'message': 'Inscription réussie', 'token': token.key}, status=status.HTTP_201_CREATED)
 
 
 
@@ -76,13 +36,23 @@ def create_profile(request):
     description = request.data.get('description')
     sector = request.data.get('sector')
     site = request.data.get('site')
+    telephone = request.data.get('telephone')
+    email = request.data.get('email')
+    password = request.data.get('password')
+    subscription_id = request.data.get('subscription_id')
 
     # Validez les données d'entrée (vous pouvez utiliser Django forms ou serializers)
     if not name or not description or not sector or not site:
         return Response({'message': 'Veuillez fournir toutes les informations du profil.'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        subscription = Subscription.objects.get(id=subscription_id)
+    except Subscription.DoesNotExist:
+        return Response({'message': 'La souscription spécifiée n\'existe pas.'}, status=status.HTTP_400_BAD_REQUEST)
 
     # Créez un profil utilisateur lié à l'utilisateur authentifié
-    user_profile = EntrepreneurProfile(user=request.user, name=name, description=description, sector=sector, site=site)
+    user_profile = EntrepreneurProfile(name=name, 
+    description=description, sector=sector, 
+    site=site, telephone=telephone,email=email, password=password,subscription=subscription)
     user_profile.save()
 
     return Response({'message': 'Profil créé avec succès.'}, status=status.HTTP_201_CREATED)
